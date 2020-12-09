@@ -17,12 +17,22 @@ def todoview(request):
 			Todo = Todo(title = todo_title, due_date = date, category = Category.objects.get(name = category))
 			Todo.save()
 			return redirect('/')
+	return render(request, "templates/base.html", {"todos":todos, "categories":categories})
 
+		
+def tast_del(request):
+	todoviews = Todo.objects.all()
+	categories = Category.objects.all()
+
+	if request.method == 'POST':
 		if 'Tast_Delete' in request.POST:
 			checked_list = request.POST['checkedbox']
 
 			for todo_id in checked_list:
 				todo = Todo.objects.get(id = int(todo_id))
 				todo.delete()
+				todo.save()
 
-	return render(request, "templates/base.html", {"todos":todos, "categories":categories})
+	return render(request, 'templates/base.html', {'todos':todos, 'categories':categories})
+
+	
